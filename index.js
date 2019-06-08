@@ -1,6 +1,6 @@
 $(function (){
 
-    function addingItem(val){
+    function createListHtml(val){
         // return the list of html for the shipping item
         return `<li>
         <span class="shopping-item">${val}</span>
@@ -31,19 +31,29 @@ $(function (){
         // Delete Button Click Listener
         // Remove the <li> tag for the clicked delete button from the <ul> shopping list.
         $('.shopping-list').on('click', '.shopping-item-delete', function(e){
+          console.log("delete item button clicked");
             
             $(e.target).closest('li').remove();
         });
     }
     
-    function createShoppingList(){
-        // Prevent Default
+    function addingListItem(){
         // add and button click event listener to the add item.
         // get value from the input 
         // call our addingItem() to append the html to the shopping list.
+
+        $("#js-shopping-list-form").on("submit", function(e) {
+          e.preventDefault();
+          console.log("add button item clicked");
+          const value = $("#shopping-list-entry").val();
+          console.log(value);
+          $(".shopping-list").append(createListHtml(value));
+          $('#shopping-list-entry').val('');
+        })
     }
 
     $(lineThruItem);
     $(deleteItem);
+    $(addingListItem);
 
 });
