@@ -1,7 +1,15 @@
-function createListHtml(val){
+const STORE = [
+  {name: "apples", checked: false},
+  {name: "oranges", checked: false},
+  {name: "milk", checked: true},
+  {name: "bread", checked: false}
+];
+
+function generateItemElement(val,checked){
     // return the list of html for the shipping item
     return `<li>
-    <span class="shopping-item">${val}</span>
+    <span class="shopping-item 
+    ${checked ? 'shopping-item__checked' : ''}">${val}</span>
     <div class="shopping-item-controls">
       <button class="shopping-item-toggle">
         <span class="button-label">check</span>
@@ -11,6 +19,21 @@ function createListHtml(val){
       </button>
     </div>
   </li>`;
+}
+
+function generateShoppingItemsString(){
+
+  console.log("`renderShoppingList` ran");
+  const items = STORE.map((item, index) => {
+    return generateItemElement(item.name, item.checked);
+  });
+  // console.log(items);
+  return items.join("");
+}
+
+function renderShoppingList(){
+  const itemsString = generateShoppingItemsString();
+  $('.shopping-list').html(itemsString);
 }
 
 function handleCheckItem(){
@@ -43,13 +66,14 @@ function handleAddItem(){
       console.log("add button item clicked");
       const value = $("#shopping-list-entry").val();
       console.log(value);
-      $(".shopping-list").append(createListHtml(value));
+      $(".shopping-list").append(generateItemElement(value,false));
       $('#shopping-list-entry').val('');
     })
 }
 
 //main function that does call backs for the complete shopping list
 function handleShoppingList(){
+    renderShoppingList();
     handleCheckItem();
     handleDeleteItem();
     handleAddItem();
