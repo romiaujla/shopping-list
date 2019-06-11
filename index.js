@@ -56,6 +56,11 @@ function handleDeleteItem(){
     });
 }
 
+// Adding an Item to the STORE 
+function addItemToStore(item){
+  STORE.push({name: item, checked: false});
+}
+
 function handleAddItem(){
     // add and button click event listener to the add item.
     // get value from the input 
@@ -63,10 +68,14 @@ function handleAddItem(){
 
     $("#js-shopping-list-form").on("submit", function(e) {
       e.preventDefault();
-      console.log("add button item clicked");
+      
+      //getting the value input by the user
       const value = $("#shopping-list-entry").val();
-      console.log(value);
-      $(".shopping-list").append(generateItemElement(value,false));
+      
+      addItemToStore(value);
+      renderShoppingList();
+
+      // clearing the input field once add item is completed
       $('#shopping-list-entry').val('');
     })
 }
