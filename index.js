@@ -113,17 +113,19 @@ function addItemToStore(item) {
 }
 
 function handleAddItem() {
-  // add and button click event listener to the add item.
-  // get value from the input 
-  // call our addingItem() to append the html to the shopping list.
-
+  
+  // Handles the Add Item button click 
   $("#js-shopping-list-form").on("submit", function (e) {
+    // Prevents page from submitting and refreshing automatically
     e.preventDefault();
 
-    //getting the value input by the user
+    // getting the value input by the user
     const value = $("#shopping-list-entry").val();
 
+    // callback to the function that adds item to the STORE
     addItemToStore(value);
+
+    // Once the item is added, render the updated shopping list
     renderShoppingList();
 
     // clearing the input field once add item is completed
@@ -131,7 +133,7 @@ function handleAddItem() {
   })
 }
 
-//main function that does call backs for the complete shopping list
+// Main function that does call backs for the handling all the operations of shopping list
 function handleShoppingList() {
   renderShoppingList();
   handleCheckItem();
@@ -139,5 +141,5 @@ function handleShoppingList() {
   handleAddItem();
 }
 
-
+// callback our main function once DOM is ready.
 $(handleShoppingList);
