@@ -70,7 +70,6 @@ function handleDeleteItem(){
 
         deleteItemFromStore(itemToBeDeleted);
         renderShoppingList();
-
     });
 }
 
