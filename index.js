@@ -46,13 +46,31 @@ function handleCheckItem(){
     });
 }
 
+function deleteItemFromStore(itemName){
+  // Find the item in the store and delete it.
+  let deleteItemIndex = 0;
+  STORE.find((item,index) => {
+    if(item.name === itemName){
+      deleteItemIndex = index;
+    }
+  });
+  
+  // console.log(deleteItemIndex);
+
+  STORE.splice(deleteItemIndex,1);
+}
+
 function handleDeleteItem(){
     // Delete Button Click Listener
     // Remove the <li> tag for the clicked delete button from the <ul> shopping list.
     $('.shopping-list').on('click', '.shopping-item-delete', function(e){
       console.log("delete item button clicked");
-        
-        $(e.target).closest('li').remove();
+
+        const itemToBeDeleted = $(e.target).closest('li').find('.shopping-item').html();
+
+        deleteItemFromStore(itemToBeDeleted);
+        renderShoppingList();
+
     });
 }
 
