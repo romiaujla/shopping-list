@@ -1,15 +1,19 @@
-const STORE = [
-  {name: "apples", checked: false},
-  {name: "oranges", checked: false},
-  {name: "milk", checked: true},
-  {name: "bread", checked: false}
-];
+const STORE = {
+  items:[
+    {id: cuid(), name: "apples", checked: false},
+    {id: cuid(), name: "oranges", checked: false},
+    {id: cuid(), name: "milk", checked: true},
+    {id: cuid(), name: "bread", checked: false}
+  ],
+  hideCompleted: false,
+  searchTerm: null,
+};
 
-function generateItemElement(val,checked){
+function generateItemElement(item){
     // return the list of html for the shipping item
-    return `<li>
+    return `<li id="${item.id}">
     <span class="shopping-item 
-    ${checked ? 'shopping-item__checked' : ''}">${val}</span>
+    ${item.checked ? 'shopping-item__checked' : ''}">${item.name}</span>
     <div class="shopping-item-controls">
       <button class="shopping-item-toggle">
         <span class="button-label">check</span>
@@ -24,8 +28,8 @@ function generateItemElement(val,checked){
 function generateShoppingItemsString(){
 
   console.log("`renderShoppingList` ran");
-  const items = STORE.map((item, index) => {
-    return generateItemElement(item.name, item.checked);
+  const items = STORE.items.map((item, index) => {
+    return generateItemElement(item);
   });
   // console.log(items);
   return items.join("");
@@ -36,6 +40,21 @@ function renderShoppingList(){
   $('.shopping-list').html(itemsString);
 }
 
+function findItemIndexInStore(itemName) {
+  let itemIndex = 0;
+  STORE.items.find((item,index) => {
+    if(item.name === itemName){
+      itemIndex = index;
+    }
+  });
+  return itemIndex;
+}
+
+function changeCheckedProperty(itemIndex) {
+  STORE.items[itemIndex].checked = !STORE.items[itemIndex].checked;
+}
+
+
 function handleCheckItem(){
     // Check button click
     // Toggleclass (shopping-item__checked) on the <span> of the list item
@@ -43,13 +62,19 @@ function handleCheckItem(){
         
         $(e.target).closest('li').find('.shopping-item').toggleClass('shopping-item__checked');
         console.log('Check Button Clicked');
+
+        const itemName = $(e.target).closest('li').find('.shopping-item').html();
+        const index = findItemIndexInStore(itemName);
+        changeCheckedProperty(index);
+        renderShoppingList();
     });
 }
+
 
 function deleteItemFromStore(itemName){
   // Find the item in the store and delete it.
   let deleteItemIndex = 0;
-  STORE.find((item,index) => {
+  STORE.items.find((item,index) => {
     if(item.name === itemName){
       deleteItemIndex = index;
     }
@@ -57,7 +82,7 @@ function deleteItemFromStore(itemName){
   
   // console.log(deleteItemIndex);
 
-  STORE.splice(deleteItemIndex,1);
+  STORE.items.splice(deleteItemIndex,1);
 }
 
 function handleDeleteItem(){
@@ -74,9 +99,9 @@ function handleDeleteItem(){
     });
 }
 
-// Adding an Item to the STORE 
+// Adding an Item to the STORE.items 
 function addItemToStore(item){
-  STORE.push({name: item, checked: false});
+  STORE.items.push({name: item, checked: false});
 }
 
 function handleAddItem(){
