@@ -28,7 +28,7 @@ function generateItemElement(item) {
 // This function returns the string for the Shopping List HTML 
 // which will be rendered to the Page
 function generateShoppingItemsString() {
-  console.log("`renderShoppingList` ran");
+
   const items = STORE.items.map((item, index) => {
     return generateItemElement(item);
   });
