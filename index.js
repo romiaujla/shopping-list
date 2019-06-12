@@ -25,8 +25,9 @@ function generateItemElement(item){
   </li>`;
 }
 
+// This function returns the string for the Shopping List HTML 
+// which will be rendered to the Page
 function generateShoppingItemsString(){
-
   console.log("`renderShoppingList` ran");
   const items = STORE.items.map((item, index) => {
     return generateItemElement(item);
@@ -35,20 +36,50 @@ function generateShoppingItemsString(){
   return items.join("");
 }
 
+// Renders the items in the STORE in the <ul> tag
 function renderShoppingList(){
   const itemsString = generateShoppingItemsString();
   $('.shopping-list').html(itemsString);
 }
 
+// This function returns the Id attribute of the <li> tag in which the buttons are clicked
+function getItemID(e){
+  return $(e.target).closest('li').attr('id');
+}
 
+// This function returns the index of the item whose ID is passed as the parameter
+function findItemIndex(id){
+  let itemIndex = null;
+  STORE.items.find((item, index) => {
+    if(item.id === id){
+      itemIndex = index;
+    }
+  });
+  return itemIndex;
+}
+
+// Toggle the checked property for the item whose id is passed as the argument
+function checkUncheckItem(id){
+  const index = findItemIndex(id);
+  STORE.items[index].checked = !STORE.items[index].checked;
+}
+
+// This function handles the check button click functionality done by the user 
+// to check/uncheck an item in the shopping list.
 function handleCheckItem(){
-    // Check button click
-    // Toggleclass (shopping-item__checked) on the <span> of the list item
+    
+    // Event Listener for the click button on an item
     $('.shopping-list').on('click', '.shopping-item-toggle', function(e){
         
-        const itemID = $(e.target).closest('li').attr('id');
-        console.log(itemID);
-        console.log('Check Button Clicked');
+        // get of the item for which the user wants to check / uncheck
+        const itemID = getItemID(e);
+
+        // callback for the function that does the check/uncheck function
+        checkUncheckItem(itemID);
+        
+        // Render the shopping list once the check/uncheck is complete
+        renderShoppingList();
+
     });
 }
 
