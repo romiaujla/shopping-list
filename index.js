@@ -1,15 +1,19 @@
-const STORE = [
-  {name: "apples", checked: false},
-  {name: "oranges", checked: false},
-  {name: "milk", checked: true},
-  {name: "bread", checked: false}
-];
+const STORE = {
+  items: [
+    {id: cuid(), name: "apples", checked: false},
+    {id: cuid(), name: "oranges", checked: false},
+    {id: cuid(), name: "milk", checked: true},
+    {id: cuid(), name: "bread", checked: false}
+  ],
+  hideCompleted: false,
+  searchTerm: null
+}
 
-function generateItemElement(val,checked){
+function generateItemElement(item){
     // return the list of html for the shipping item
-    return `<li>
+    return `<li id="${item.id}">
     <span class="shopping-item 
-    ${checked ? 'shopping-item__checked' : ''}">${val}</span>
+    ${item.checked ? 'shopping-item__checked' : ''}">${item.name}</span>
     <div class="shopping-item-controls">
       <button class="shopping-item-toggle">
         <span class="button-label">check</span>
@@ -46,18 +50,18 @@ function handleCheckItem(){
     });
 }
 
-function deleteItemFromStore(itemName){
+function deleteItemFromStore(id){
   // Find the item in the store and delete it.
-  let deleteItemIndex = 0;
+  let itemIndex = 0;
   STORE.find((item,index) => {
-    if(item.name === itemName){
-      deleteItemIndex = index;
+    if(item.id === id){
+      itemIndex = index;
     }
   });
   
   // console.log(deleteItemIndex);
 
-  STORE.splice(deleteItemIndex,1);
+  STORE.splice(itemIndex,1);
 }
 
 function handleDeleteItem(){
@@ -66,9 +70,9 @@ function handleDeleteItem(){
     $('.shopping-list').on('click', '.shopping-item-delete', function(e){
       console.log("delete item button clicked");
 
-        const itemToBeDeleted = $(e.target).closest('li').find('.shopping-item').html();
+        const itemID = $(e.target).closest('li').attr('id');
 
-        deleteItemFromStore(itemToBeDeleted);
+        deleteItemFromStore(itemID);
         renderShoppingList();
     });
 }
