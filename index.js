@@ -109,7 +109,7 @@ function handleDeleteItem() {
 
 // Adding an Item to the STORE.items 
 function addItemToStore(item) {
-  STORE.items.push({ name: item, checked: false });
+  STORE.items.push({ id: cuid(), name: item, checked: false });
 }
 
 function handleAddItem() {
