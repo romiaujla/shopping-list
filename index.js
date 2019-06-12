@@ -1,4 +1,4 @@
-const STORE = {
+const STORE= {
   items: [
     {id: cuid(), name: "apples", checked: false},
     {id: cuid(), name: "oranges", checked: false},
@@ -28,8 +28,8 @@ function generateItemElement(item){
 function generateShoppingItemsString(){
 
   console.log("`renderShoppingList` ran");
-  const items = STORE.map((item, index) => {
-    return generateItemElement(item.name, item.checked);
+  const items = STORE.items.map((item, index) => {
+    return generateItemElement(item);
   });
   // console.log(items);
   return items.join("");
@@ -40,20 +40,22 @@ function renderShoppingList(){
   $('.shopping-list').html(itemsString);
 }
 
+
 function handleCheckItem(){
     // Check button click
     // Toggleclass (shopping-item__checked) on the <span> of the list item
     $('.shopping-list').on('click', '.shopping-item-toggle', function(e){
         
-        $(e.target).closest('li').find('.shopping-item').toggleClass('shopping-item__checked');
+        const itemID = $(e.target).closest('li').attr('id');
+        console.log(itemID);
         console.log('Check Button Clicked');
     });
 }
 
 function deleteItemFromStore(id){
-  // Find the item in the store and delete it.
+  // Find the item in the STORE.items and delete it.
   let itemIndex = 0;
-  STORE.find((item,index) => {
+  STORE.items.find((item,index) => {
     if(item.id === id){
       itemIndex = index;
     }
@@ -61,7 +63,7 @@ function deleteItemFromStore(id){
   
   // console.log(deleteItemIndex);
 
-  STORE.splice(itemIndex,1);
+  STORE.items.splice(itemIndex,1);
 }
 
 function handleDeleteItem(){
@@ -77,9 +79,9 @@ function handleDeleteItem(){
     });
 }
 
-// Adding an Item to the STORE 
+// Adding an Item to the STORE.items 
 function addItemToStore(item){
-  STORE.push({name: item, checked: false});
+  STORE.items.push({name: item, checked: false});
 }
 
 function handleAddItem(){
